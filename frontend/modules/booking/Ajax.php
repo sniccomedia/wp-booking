@@ -2,9 +2,9 @@
 namespace Bookly\Frontend\Modules\Booking;
 
 use Bookly\Lib;
-use Bookly\Frontend\Components\Booking\InfoText;
 use Bookly\Frontend\Modules\Booking\Lib\Steps;
 use Bookly\Frontend\Modules\Booking\Lib\Errors;
+use Bookly\Frontend\Components\Booking\InfoText;
 
 /**
  * Class Ajax
@@ -685,22 +685,41 @@ class Ajax extends Lib\Base\Ajax
                                 break ( 2 );
                         }
                     }
-                    $info_text = InfoText::prepare( Steps::DONE, Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_info_complete_step' ), $userData );
-                } while ( 0 );
-
-                $download_invoice = Proxy\Invoices::getDownloadButton();
-                $response = Proxy\Shared::stepOptions( array(
-                    'success' => true,
-                    'html' => self::renderTemplate( '8_complete', compact( 'progress_tracker', 'info_text', 'download_invoice' ), false ),
-                    'final_step_url' => Lib\Proxy\Pro::getFinalStepUrl( $userData ),
-                ), 'complete' );
-                
+	                $info_text = InfoText::prepare(
+		                Steps::DONE,
+		                Lib\Utils\Common::getTranslatedOption('bookly_l10n_info_complete_step'),
+		                $userData
+	                );
+                }
+                while( 0 );
+	
+	            $download_invoice = Proxy\Invoices::getDownloadButton();
+	            $response = Proxy\Shared::stepOptions([
+		                                                  'success' => true,
+		                                                  'html' => self::renderTemplate(
+			                                                  '8_complete',
+			                                                  compact(
+				                                                  'progress_tracker',
+				                                                  'info_text',
+				                                                  'download_invoice'
+			                                                  ),
+			                                                  false
+		                                                  ),
+		                                                  'final_step_url' => Lib\Proxy\Pro::getFinalStepUrl(
+			                                                  $userData
+		                                                  ),
+	                                                  ], 'complete');
+	            
             }
         } else {
             $response = array( 'success' => false, 'error' => Errors::SESSION_ERROR );
         }
         $userData->sessionSave();
 
+        if ( $response['success'] === true ) {
+            do_action('bookly_booking_completed', $userData);
+        }
+        
         // Output JSON response.
         wp_send_json( $response );
     }

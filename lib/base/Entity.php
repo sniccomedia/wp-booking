@@ -252,6 +252,9 @@ abstract class Entity extends Cache
         if ( $res ) {
             // Update loaded values.
             $this->loaded_values = $this->getFields();
+            
+            do_action("bookly_{$this->getEntityName()}_updated", $this);
+            
         }
 
         return $res;
@@ -396,4 +399,12 @@ abstract class Entity extends Cache
 
         return $this;
     }
+    
+    private function getEntityName() {
+    
+        $entity_name =array_reverse(explode("Entities\\", static::class, 2))[0];
+        return strtolower($entity_name);
+        
+    }
+    
 }

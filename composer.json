@@ -1,0 +1,20 @@
+{
+  "name": "sniccomedia/wp-booking",
+  "minimum-stability": "stable",
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "Bookly",
+      "homepage": "https://www.booking-wp-plugin.com/",
+      "role": "Origial Developers"
+    },
+    {
+      "name": "Snicco Media",
+      "homepage": "https://snicco.de/",
+      "role": "Forked and Extended"
+    }
+  ],
+  "require": {
+    "composer/installers": "^v1.0.0"
+  }
+}

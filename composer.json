@@ -2,6 +2,7 @@
   "name": "sniccomedia/wp-booking",
   "minimum-stability": "stable",
   "license": "GPL-3.0-only",
+  "type": "wordpress-plugin",
   "authors": [
     {
       "name": "Bookly",

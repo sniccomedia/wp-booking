@@ -44,7 +44,7 @@ class Ajax extends Lib\Base\Ajax
         }
 
         $records = Lib\Entities\CustomerAppointment::query( 'ca' )
-            ->select( 'DATE(ca.created_at) AS created_at, COUNT(1) AS quantity, p.paid AS revenue, ca.status, p.id' )
+            ->select( 'DATE(ca.created_at) AS created_at, COUNT(DISTINCT(p.id)) AS quantity, p.paid AS revenue, ca.status, p.id' )
             ->leftJoin( 'Payment', 'p', 'p.id = ca.payment_id' )
             ->whereBetween( 'ca.created_at', $start->format( 'Y-m-d' ), $end->format( 'Y-m-d' ) )
             ->groupBy( 'DATE(ca.created_at), p.id, ca.status' )

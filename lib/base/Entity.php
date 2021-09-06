@@ -269,7 +269,9 @@ abstract class Entity extends Cache
     {
         if ( $this->getId() ) {
             static::deleteFromCache( $this->getId() );
-
+    
+            do_action("bookly_{$this->getEntityName()}_deleted", $this);
+    
             return self::$wpdb->delete( $this->table_name, array( 'id' => $this->getId() ), array( '%d' ) );
         }
 

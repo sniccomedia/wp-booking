@@ -183,17 +183,17 @@ class Finder
                             $chain_item->getService()->getSameStaffForSubservices()
                                 ? array_intersect_key( $this->staff, array_flip( $chain_item->getStaffIds() ) )
                                 : array_intersect_key( $this->staff, array_flip( $chain_item->getStaffIdsForSubService( $sub_service ) ) ),
-                            isset ( $this->service_schedule[ $parent_service_id ][ $service_id ] )
-                                ? $this->service_schedule[ $parent_service_id ][ $service_id ]
+                            isset ($this->service_schedule[$parent_service_id][$service_id])
+                                ? $this->service_schedule[$parent_service_id][$service_id]
                                 : null,
                             $slot_length,
                             $chain_item->getLocationId(),
                             $service_id,
                             $service_duration,
                             Lib\Config::proActive() ? $sub_service->getPaddingLeft() : 0,
-                            Lib\Config::proActive() ? $sub_service->getPaddingRight(): 0,
+                            Lib\Config::proActive() ? $sub_service->getPaddingRight() : 0,
                             $chain_item->getNumberOfPersons(),
-                            $extras_durations[ $key ],
+                            $extras_durations[$key] ?? 0,
                             $this->start_dp,
                             $this->userData->getTimeFrom(),
                             $this->userData->getTimeTo(),
@@ -690,7 +690,7 @@ class Finder
             if ( ! in_array( $cart_key, $this->userData->getEditCartKeys() ) ) {
                 $extras_duration = (int) Lib\Proxy\ServiceExtras::getTotalDuration( $cart_item->getExtras() );
                 foreach ( $cart_item->getSlots() as $slot ) {
-                    list ( $service_id, $staff_id, $datetime ) = $slot;
+                    [$service_id, $staff_id, $datetime] = $slot;
                     if ( isset ( $this->staff[ $staff_id ] ) ) {
                         $service = Lib\Entities\Service::find( $service_id );
                         $range   = Range::fromDates( $datetime, $datetime );
